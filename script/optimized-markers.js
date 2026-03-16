@@ -127,7 +127,12 @@ function createOptimizedMarkers() {
 }
 
 // Fonction pour afficher un POI dans le volet droit
+let currentPoiData = null;
+
 function showPoiInSidePanel(poiData) {
+    // Sauvegarder les données du POI actuellement affiché
+    currentPoiData = poiData;
+    
     const sidePanel = document.getElementById('side-panel');
     const poiList = document.getElementById('poi-list');
     const panelHeader = sidePanel.querySelector('.side-panel-header h2');
@@ -163,8 +168,28 @@ function showPoiInSidePanel(poiData) {
                      data-photo13="${poiData.photo13 || ''}">`;
     }
     
-    if (poiData.descriptif) {
-        content += `<p>${poiData.descriptif}</p>`;
+    // Gérer la description selon la langue
+    const currentLanguage = localStorage.getItem('language') || 'fr';
+    let description = '';
+    
+    console.log('=== DEBUG LANGUE ===');
+    console.log('currentLanguage:', currentLanguage);
+    console.log('poiData.trad_des:', poiData.trad_des);
+    console.log('poiData.descriptif:', poiData.descriptif);
+    
+    if (currentLanguage === 'en' && poiData.trad_des) {
+        description = poiData.trad_des;
+        console.log('Utilisation de trad_des (EN)');
+    } else if (poiData.descriptif) {
+        description = poiData.descriptif;
+        console.log('Utilisation de descriptif (FR)');
+    }
+    
+    console.log('Description finale:', description);
+    console.log('===================')
+    
+    if (description) {
+        content += `<p>${description}</p>`;
     }
     
     if (poiData.tel) {
@@ -334,3 +359,10 @@ function setupBassinHandler(marker, bassinLayer) {
         }
     });
 }
+
+// Écouter les changements de langue pour rafraîchir le POI affiché
+window.addEventListener('languageChanged', function(e) {
+    if (currentPoiData) {
+        showPoiInSidePanel(currentPoiData);
+    }
+});

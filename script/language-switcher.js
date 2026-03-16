@@ -178,6 +178,7 @@ class LanguageSwitcher {
         localStorage.setItem('language', lang);
         this.applyLanguage(lang);
         
+        console.log('Déclenchement de languageChanged avec:', lang);
         // Déclencher un événement personnalisé pour que d'autres scripts puissent réagir
         window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
     }
