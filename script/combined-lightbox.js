@@ -93,29 +93,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // Support tactile pour mobile (swipe)
     let touchStartX = 0;
     let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
     
     modalImg.addEventListener('touchstart', function(e) {
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
+    
+    modalImg.addEventListener('touchmove', function(e) {
+        // Empêcher le scroll pendant le swipe sur l'image
+        if (slideImages.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
     
     modalImg.addEventListener('touchend', function(e) {
         touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
         handleSwipe();
     }, { passive: true });
     
     function handleSwipe() {
         const swipeThreshold = 50; // Distance minimale pour détecter un swipe
+        const swipeDistanceX = Math.abs(touchEndX - touchStartX);
+        const swipeDistanceY = Math.abs(touchEndY - touchStartY);
         
         if (slideImages.length <= 1) return;
         
-        if (touchEndX < touchStartX - swipeThreshold) {
-            // Swipe vers la gauche - image suivante
-            nextButton.click();
-        }
-        
-        if (touchEndX > touchStartX + swipeThreshold) {
-            // Swipe vers la droite - image précédente
-            prevButton.click();
+        // Vérifier que c'est bien un swipe horizontal et pas vertical
+        if (swipeDistanceX > swipeDistanceY && swipeDistanceX > swipeThreshold) {
+            if (touchEndX < touchStartX) {
+                // Swipe vers la gauche - image suivante
+                nextButton.click();
+            } else {
+                // Swipe vers la droite - image précédente
+                prevButton.click();
+            }
         }
     }
 });
