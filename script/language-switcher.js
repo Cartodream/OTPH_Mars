@@ -64,12 +64,18 @@ const translations = {
         explorer: "Explorer",
         list: "Liste",
         
+        // POI Panel
+        pointOfInterest: "Point d'Intérêt",
+        moreInformation: "Plus d'informations",
+        itinerary: "Itinéraire",
+        clickHere: "cliquez-ici",
+        
         // Langue
         language: "Langue"
     },
     en: {
         // Header
-        pageTitle: "The Heritage of Pays Houdanais Online",
+        pageTitle: "Houdan Region Online Heritage",
         
         // Filtres
         filters: "Filters",
@@ -131,6 +137,12 @@ const translations = {
         explorer: "Explorer",
         list: "List",
         
+        // POI Panel
+        pointOfInterest: "Point of Interest",
+        moreInformation: "More information",
+        itinerary: "Itinerary",
+        clickHere: "click here",
+        
         // Langue
         language: "Language"
     }
@@ -139,7 +151,9 @@ const translations = {
 // Classe pour gérer la langue
 class LanguageSwitcher {
     constructor() {
-        this.currentLanguage = localStorage.getItem('language') || 'fr';
+        // Forcer le français par défaut à chaque ouverture
+        this.currentLanguage = 'fr';
+        localStorage.setItem('language', 'fr');
         this.init();
     }
     

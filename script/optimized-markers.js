@@ -138,7 +138,8 @@ function showPoiInSidePanel(poiData) {
     const panelHeader = sidePanel.querySelector('.side-panel-header h2');
     
     // Changer le titre
-    panelHeader.textContent = 'Point d\'Intérêt';
+    const currentLanguage = localStorage.getItem('language') || 'fr';
+    panelHeader.textContent = currentLanguage === 'en' ? 'Point of Interest' : 'Point d\'Intérêt';
     
     // Créer le contenu du POI
     let content = `<div class="poi-detail">`;
@@ -169,7 +170,6 @@ function showPoiInSidePanel(poiData) {
     }
     
     // Gérer la description selon la langue
-    const currentLanguage = localStorage.getItem('language') || 'fr';
     let description = '';
     
     console.log('=== DEBUG LANGUE ===');
@@ -201,11 +201,14 @@ function showPoiInSidePanel(poiData) {
     }
     
     if (poiData.site_web) {
-        content += `<p><a href="${poiData.site_web}" target="_blank">Plus d'informations</a></p>`;
+        const moreInfoText = currentLanguage === 'en' ? 'More information' : 'Plus d\'informations';
+        content += `<p><a href="${poiData.site_web}" target="_blank">${moreInfoText}</a></p>`;
     }
     
     if (poiData.Latitude && poiData.Longitude) {
-        content += `<p><i>Itinéraire : <a href="https://www.google.com/maps/dir//${poiData.Latitude},${poiData.Longitude}" target="_blank">cliquez-ici</a></i></p>`;
+        const itineraryText = currentLanguage === 'en' ? 'Itinerary' : 'Itinéraire';
+        const clickHereText = currentLanguage === 'en' ? 'click here' : 'cliquez-ici';
+        content += `<p><i>${itineraryText} : <a href="https://www.google.com/maps/dir//${poiData.Latitude},${poiData.Longitude}" target="_blank">${clickHereText}</a></i></p>`;
     }
     
     content += `</div>`;
