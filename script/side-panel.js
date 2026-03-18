@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour ouvrir/fermer le panneau
     toggleListBtn.addEventListener('click', function() {
         const panelHeader = sidePanel.querySelector('.side-panel-header h2');
-        panelHeader.textContent = 'Liste des points d\'intérêt';
+        const currentLanguage = localStorage.getItem('language') || 'fr';
+        panelHeader.textContent = currentLanguage === 'en' ? 'List of Points of Interest' : 'Liste des points d\'intérêt';
         sidePanel.classList.toggle('active');
         updatePoiList();
     });
@@ -88,6 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Afficher les POIs filtrés
         filteredPois.forEach(poi => {
             const properties = poi.properties;
+            const currentLanguage = localStorage.getItem('language') || 'fr';
+            const displayName = (currentLanguage === 'en' && properties.nom_en) ? properties.nom_en : properties.nom;
             
             // Création de la carte
             const card = document.createElement('div');
@@ -96,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Image
             let imageHtml = '';
             if (properties.photo) {
-                imageHtml = `<img src="${properties.photo}" alt="${properties.nom}" class="poi-card-image">`;
+                imageHtml = `<img src="${properties.photo}" alt="${displayName}" class="poi-card-image">`;
             } else {
                 imageHtml = `<div class="poi-image-placeholder"></div>`;
             }
@@ -105,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = `
                 ${imageHtml}
                 <div class="poi-content">
-                    <h3 class="poi-title">${properties.nom}</h3>
+                    <h3 class="poi-title">${displayName}</h3>
                     <span class="poi-category">${properties.sous_cat === 'Patrimoine bâti monumental' ? 'Châteaux, Manoirs...' : properties.sous_cat === 'Patrimoine Religieux' ? 'Eglises, Chapelles...' : properties.sous_cat === 'Bâti Traditionnel' ? 'Maisons, Moulins, Lavoirs...' : properties.sous_cat}</span>
                     <div class="poi-location">
                         <i class="fas fa-map-marker-alt"></i> ${properties.commune || ''}
@@ -140,8 +143,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Image
             let imageHtml = '';
+            const currentLanguage = localStorage.getItem('language') || 'fr';
+            const displayName = (currentLanguage === 'en' && properties.nom_en) ? properties.nom_en : properties.nom;
             if (properties.photo) {
-                imageHtml = `<img src="${properties.photo}" alt="${properties.nom}" class="poi-card-image">`;
+                imageHtml = `<img src="${properties.photo}" alt="${displayName}" class="poi-card-image">`;
             } else {
                 imageHtml = `<div class="poi-image-placeholder"></div>`;
             }
@@ -150,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = `
                 ${imageHtml}
                 <div class="poi-content">
-                    <h3 class="poi-title">${properties.nom}</h3>
+                    <h3 class="poi-title">${displayName}</h3>
                     <span class="poi-category">Etangs et Rivières</span>
                     <div class="poi-location">
                         <i class="fas fa-water"></i> Cours d'eau
@@ -215,6 +220,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Écouter l'événement personnalisé pour les changements de filtres
     document.addEventListener('filtersChanged', function() {
         if (sidePanel.classList.contains('active')) {
+            updatePoiList();
+        }
+    });
+    
+    // Écouter les changements de langue
+    window.addEventListener('languageChanged', function(e) {
+        if (sidePanel.classList.contains('active')) {
+            // Mettre à jour le titre du panneau
+            const panelHeader = sidePanel.querySelector('.side-panel-header h2');
+            const currentLanguage = localStorage.getItem('language') || 'fr';
+            panelHeader.textContent = currentLanguage === 'en' ? 'List of Points of Interest' : 'Liste des points d\'intérêt';
+            // Rafraîchir la liste
             updatePoiList();
         }
     });

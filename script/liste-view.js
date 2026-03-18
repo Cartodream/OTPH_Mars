@@ -13,8 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        const currentLanguage = localStorage.getItem('language') || 'fr';
+        
         poiData.forEach(poi => {
             const properties = poi.properties;
+            const displayName = (currentLanguage === 'en' && properties.nom_en) ? properties.nom_en : properties.nom;
             
             // Création de la carte
             const card = document.createElement('div');
@@ -25,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Image
             let imageHtml = '';
             if (properties.photo) {
-                imageHtml = `<img src="${properties.photo}" alt="${properties.nom}" class="poi-image">`;
+                imageHtml = `<img src="${properties.photo}" alt="${displayName}" class="poi-card-image">`;
             } else {
                 imageHtml = `<div class="poi-image-placeholder"></div>`;
             }
@@ -34,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.innerHTML = `
                 ${imageHtml}
                 <div class="poi-content">
-                    <h3 class="poi-title">${properties.nom}</h3>
+                    <h3 class="poi-title">${displayName}</h3>
                     <span class="poi-category">${properties.sous_cat}</span>
                     <p class="poi-description">${properties.descriptif || 'Aucune description disponible.'}</p>
                     <div class="poi-location">
@@ -59,12 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fonction pour afficher les détails d'un POI
     function showPoiDetail(poi) {
         const properties = poi.properties;
+        const currentLanguage = localStorage.getItem('language') || 'fr';
+        const displayName = (currentLanguage === 'en' && properties.nom_en) ? properties.nom_en : properties.nom;
         
         // Construire le contenu de la modal
         let detailHtml = `
             <div class="poi-detail">
-                ${properties.photo ? `<img src="${properties.photo}" alt="${properties.nom}" class="poi-detail-image">` : ''}
-                <h2 class="poi-detail-title">${properties.nom}</h2>
+                ${properties.photo ? `<img src="${properties.photo}" alt="${displayName}" class="poi-detail-image">` : ''}
+                <h2 class="poi-detail-title">${displayName}</h2>
                 <span class="poi-detail-category">${properties.categorie} - ${properties.sous_cat}</span>
                 
                 <div class="poi-detail-info">

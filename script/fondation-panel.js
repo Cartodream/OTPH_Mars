@@ -16,8 +16,11 @@ function loadFondationPOIs() {
         return;
     }
     
+    const currentLanguage = localStorage.getItem('language') || 'fr';
+    
     fondationPOIs.forEach(feature => {
         const properties = feature.properties;
+        const displayName = (currentLanguage === 'en' && properties.nom_en) ? properties.nom_en : properties.nom;
         
         // Déterminer le statut du projet
         let projetStatut;
@@ -36,7 +39,7 @@ function loadFondationPOIs() {
         // Image
         let imageHtml = '';
         if (properties.photo) {
-            imageHtml = `<img src="${properties.photo}" alt="${properties.nom}" class="poi-card-image">`;
+            imageHtml = `<img src="${properties.photo}" alt="${displayName}" class="poi-card-image">`;
         } else {
             imageHtml = `<div class="poi-image-placeholder"></div>`;
         }
@@ -45,7 +48,7 @@ function loadFondationPOIs() {
         card.innerHTML = `
             ${imageHtml}
             <div class="poi-content">
-                <h3 class="poi-title">${properties.nom}</h3>
+                <h3 class="poi-title">${displayName}</h3>
                 <div class="projet-statut">${projetStatut}</div>
                 <span class="poi-category">${properties.sous_cat}</span>
                 <p class="poi-description">${properties.descriptif || 'Aucune description disponible.'}</p>

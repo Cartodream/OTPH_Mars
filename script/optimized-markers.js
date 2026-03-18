@@ -139,6 +139,7 @@ function showPoiInSidePanel(poiData) {
     
     // Changer le titre
     const currentLanguage = localStorage.getItem('language') || 'fr';
+    const displayName = (currentLanguage === 'en' && poiData.nom_en) ? poiData.nom_en : poiData.nom;
     panelHeader.textContent = currentLanguage === 'en' ? 'Point of Interest' : 'Point d\'Intérêt';
     
     // Créer le contenu du POI
@@ -150,10 +151,10 @@ function showPoiInSidePanel(poiData) {
     if (poiData.fondation_courant) {
         logoHtml += `<a href="${poiData.fondation_courant}" target="_blank" title="Voir sur le site de la Fondation du Patrimoine"><img src="image/fondation.jpg" alt="Fondation" style="float: right; height: 30px; margin-left: 10px;"></a>`;
     }
-    content += `<h3 style="text-align: center;">${logoHtml}${poiData.nom}</h3>`;
+    content += `<h3 style="text-align: center;">${logoHtml}${displayName}</h3>`;
     
     if (poiData.photo) {
-        content += `<img src="${poiData.photo}" alt="${poiData.nom}" class="poi-detail-image popup-thumbnail" 
+        content += `<img src="${poiData.photo}" alt="${displayName}" class="poi-detail-image popup-thumbnail" 
                      data-full-img="${poiData.photo}"
                      data-photo2="${poiData.photo2 || ''}"
                      data-photo3="${poiData.photo3 || ''}"

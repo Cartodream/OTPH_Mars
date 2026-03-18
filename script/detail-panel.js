@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let detailContent = `<div class="poi-detail">`;
         
         // Titre
-        detailContent += `<h2 class="poi-detail-title">${properties.nom}</h2>`;
+        const currentLanguage = localStorage.getItem('language') || 'fr';
+        const displayName = (currentLanguage === 'en' && properties.nom_en) ? properties.nom_en : properties.nom;
+        detailContent += `<h2 class="poi-detail-title">${displayName}</h2>`;
         detailContent += `<span class="poi-category">${properties.sous_cat}</span>`;
         
         // Image (au-dessus du texte)
@@ -52,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Description (en dessous de l'image)
         detailContent += `<div class="poi-detail-text">`;
-        const currentLanguage = localStorage.getItem('language') || 'fr';
         let description = '';
         
         console.log('Langue actuelle:', currentLanguage);
