@@ -101,13 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
         touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
     
-    modalImg.addEventListener('touchmove', function(e) {
-        // Empêcher le scroll pendant le swipe sur l'image
-        if (slideImages.length > 1) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-    
     modalImg.addEventListener('touchend', function(e) {
         touchEndX = e.changedTouches[0].screenX;
         touchEndY = e.changedTouches[0].screenY;
@@ -115,19 +108,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: true });
     
     function handleSwipe() {
-        const swipeThreshold = 50; // Distance minimale pour détecter un swipe
+        const swipeThreshold = 50;
         const swipeDistanceX = Math.abs(touchEndX - touchStartX);
         const swipeDistanceY = Math.abs(touchEndY - touchStartY);
         
         if (slideImages.length <= 1) return;
         
-        // Vérifier que c'est bien un swipe horizontal et pas vertical
+        // Swipe horizontal uniquement si le mouvement horizontal est dominant
         if (swipeDistanceX > swipeDistanceY && swipeDistanceX > swipeThreshold) {
             if (touchEndX < touchStartX) {
-                // Swipe vers la gauche - image suivante
                 nextButton.click();
             } else {
-                // Swipe vers la droite - image précédente
                 prevButton.click();
             }
         }
