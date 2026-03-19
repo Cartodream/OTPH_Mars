@@ -21,6 +21,13 @@
     -webkit-overflow-scrolling: touch !important;
   }
   
+  /* Assurer le scroll pour le détail POI */
+  .poi-detail {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: 100% !important;
+  }
+  
   /* Adaptation du titre pour mobile */
   .page-title h1 {
     font-size: 1.2rem !important;
