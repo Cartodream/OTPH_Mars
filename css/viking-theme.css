@@ -26,7 +26,7 @@ body {
   margin: 0;
   padding: 0 0 50px 0;
   height: calc(100vh - 50px);
-  overflow: hidden;
+  /* overflow: hidden retiré pour permettre le scroll dans les panels */
 }
 
 /* Header & Title */

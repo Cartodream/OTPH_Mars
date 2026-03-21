@@ -313,7 +313,7 @@
     width: 400px !important;
     height: calc(100vh - 100px) !important;
     max-height: calc(100vh - 100px) !important;
-    overflow: hidden !important;
+    /* overflow: hidden retiré pour permettre le scroll des enfants */
 }
 
 .side-panel.active {

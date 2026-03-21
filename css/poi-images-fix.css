@@ -33,10 +33,7 @@
     object-fit: cover;
 }
 
-/* Assurer que les images ne débordent pas */
-.poi-detail {
-    overflow-x: hidden;
-}
+/* Pas de overflow-x: hidden pour permettre le scroll */
 
 /* Style hover pour indiquer que l'image est cliquable */
 .poi-detail-image:hover {
