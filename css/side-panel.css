@@ -90,6 +90,12 @@
     flex: 1;
 }
 
+/* Assurer que le détail POI peut scroller */
+.poi-detail {
+    min-height: 100%;
+    overflow-y: visible;
+}
+
 .fondation-poi-list {
     background: rgba(128, 128, 118, 0.75) !important;
 }
